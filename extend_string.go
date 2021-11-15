@@ -39,12 +39,12 @@ func (s *ExtendString) Index(id int) (string, error) {
 		return "", errors.New("out of boundray")
 	}
 
-	_value := s.Value
+	_value := []rune(s.Value)
 
 	if float32(id) > float32(s.Len())*0.5 {
-		_value = s.Reverse()
+		_value = []rune(s.Reverse())
 		for i, v := range _value {
-			if i == s.Len()-id {
+			if i == s.Len()-id-1 {
 				return string(v), nil
 			}
 		}
@@ -86,15 +86,48 @@ func (s *ExtendString) SplitNumberType() (string, string) {
 			return s.Value, ""
 		} else {
 			_v, err := s.Index(i + 1)
-
-			println(i)
-
 			if err == nil && (unicode.IsLetter(v) && IsNum(_v)) {
-				return string([]rune(s.Value)[:i]), string([]rune(s.Value)[i:])
+				return string([]rune(s.Value)[:i+1]), string([]rune(s.Value)[i+1:])
 			}
 		}
 	}
 
 	return "", ""
 
+}
+
+func (s *ExtendString) SubString(start, end int) string {
+	if start > end {
+		return ""
+	}
+	if end > s.Len() {
+		return ""
+	}
+	var substring string = ""
+
+	for i := start; i < end; i++ {
+		v, _ := s.Index(i)
+		substring += v
+	}
+	return substring
+
+}
+
+func (s *ExtendString) StartsWith(pattern string) bool {
+	_e := ExtendString{
+		Value: pattern,
+	}
+
+	_length := _e.Len()
+	return s.SubString(0, _length) == pattern
+
+}
+
+func (s *ExtendString) EndsWith(pattern string) bool {
+	_e := ExtendString{
+		Value: pattern,
+	}
+
+	_length := _e.Len()
+	return s.SubString(s.Len()-_length, s.Len()) == pattern
 }

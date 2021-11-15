@@ -16,8 +16,7 @@ import (
 )
 
 func Test_interface_0(t *testing.T) {
-	var value interface{}
-	value = 3.1415
+	var value interface{} = 3.1415
 	fmt.Println(reflect.TypeOf(value).Name())
 
 	var i float32
