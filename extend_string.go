@@ -11,6 +11,7 @@ package pyLikeType
 
 import (
 	"errors"
+	"strings"
 	"unicode"
 )
 
@@ -19,11 +20,7 @@ type ExtendString struct {
 }
 
 func (s *ExtendString) Len() int {
-	var length int = 0
-	for range s.Value {
-		length += 1
-	}
-	return length
+	return len([]rune(s.Value))
 }
 
 func (s *ExtendString) Reverse() string {
@@ -34,28 +31,21 @@ func (s *ExtendString) Reverse() string {
 	return string(strArr)
 }
 
+func (s *ExtendString) ReverseSelf() {
+	strArr := []rune(s.Value)
+	for i := 0; i < len(strArr)/2; i++ {
+		strArr[len(strArr)-1-i], strArr[i] = strArr[i], strArr[len(strArr)-1-i]
+	}
+	s.Value = string(strArr)
+}
+
 func (s *ExtendString) Index(id int) (string, error) {
 	if id > s.Len()-1 {
 		return "", errors.New("out of boundray")
 	}
 
 	_value := []rune(s.Value)
-
-	if float32(id) > float32(s.Len())*0.5 {
-		_value = []rune(s.Reverse())
-		for i, v := range _value {
-			if i == s.Len()-id-1 {
-				return string(v), nil
-			}
-		}
-	}
-
-	for i, v := range _value {
-		if i == id {
-			return string(v), nil
-		}
-	}
-	return "", errors.New("can not find")
+	return string(_value[id]), nil
 }
 
 // number type in go is `int` or `float` + number or complex
@@ -101,7 +91,7 @@ func (s *ExtendString) SubString(start, end int) string {
 		return ""
 	}
 	if end > s.Len() {
-		return ""
+		end = s.Len()
 	}
 	var substring string = ""
 
@@ -130,4 +120,9 @@ func (s *ExtendString) EndsWith(pattern string) bool {
 
 	_length := _e.Len()
 	return s.SubString(s.Len()-_length, s.Len()) == pattern
+}
+
+func (s *ExtendString) Replace(pattern, target string) string {
+	result := strings.Replace(s.Value, pattern, target, -1)
+	return result
 }
