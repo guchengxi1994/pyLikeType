@@ -5,7 +5,7 @@
  * @email: guchengxi1994@qq.com
  * @Date: 2021-11-12 22:08:20
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2021-11-13 11:06:31
+ * @LastEditTime: 2021-11-27 22:56:40
  */
 package pyLikeType
 
@@ -39,7 +39,7 @@ func (s *ExtendString) ReverseSelf() {
 	s.Value = string(strArr)
 }
 
-func (s *ExtendString) Index(id int) (string, error) {
+func (s *ExtendString) IndexOf(id int) (string, error) {
 	if id > s.Len()-1 {
 		return "", errors.New("out of boundray")
 	}
@@ -75,7 +75,7 @@ func (s *ExtendString) SplitNumberType() (string, string) {
 		if i == s.Len()-1 {
 			return s.Value, ""
 		} else {
-			_v, err := s.Index(i + 1)
+			_v, err := s.IndexOf(i + 1)
 			if err == nil && (unicode.IsLetter(v) && IsNum(_v)) {
 				return string([]rune(s.Value)[:i+1]), string([]rune(s.Value)[i+1:])
 			}
@@ -96,7 +96,7 @@ func (s *ExtendString) SubString(start, end int) string {
 	var substring string = ""
 
 	for i := start; i < end; i++ {
-		v, _ := s.Index(i)
+		v, _ := s.IndexOf(i)
 		substring += v
 	}
 	return substring
