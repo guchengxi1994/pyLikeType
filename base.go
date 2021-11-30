@@ -9,6 +9,8 @@
  */
 package pyLikeType
 
+var Version = "0.0.3"
+
 type Iterable interface {
 	Next() (int, error)
 	Hash() int

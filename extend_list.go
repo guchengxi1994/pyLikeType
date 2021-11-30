@@ -18,7 +18,7 @@ import (
 
 type ExtendList struct {
 	List
-	CompareFunction func(i, j int) bool
+	CompareFunction func(i, j int) int // <0 means List[i]<List[j],==0 means List[i]==List[j],>0 means List[i]>List[j]
 }
 
 type List []interface{}
@@ -86,7 +86,23 @@ func (el ExtendList) Less(i, j int) bool {
 	if el.CompareFunction == nil {
 		return el.List.Less(i, j)
 	} else {
-		return el.CompareFunction(i, j)
+		return el.CompareFunction(i, j) < 0
+	}
+}
+
+func (el ExtendList) More(i, j int) bool {
+	if el.CompareFunction == nil {
+		return true
+	} else {
+		return el.CompareFunction(i, j) > 0
+	}
+}
+
+func (el ExtendList) Equals(i, j int) bool {
+	if el.CompareFunction == nil {
+		return false
+	} else {
+		return el.CompareFunction(i, j) == 0
 	}
 }
 

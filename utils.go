@@ -15,3 +15,19 @@ func IsNum(s string) bool {
 	_, err := strconv.ParseFloat(s, 64)
 	return err == nil
 }
+
+func Merge_compute_minrun(n int) int {
+	r := 0
+	for n >= 64 {
+		r |= n & 1
+		n >>= 1
+	}
+	return n + r
+}
+
+func min(x, y int) int {
+	if x < y {
+		return x
+	}
+	return y
+}

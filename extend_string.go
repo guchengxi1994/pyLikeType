@@ -48,6 +48,15 @@ func (s *ExtendString) IndexOf(id int) (string, error) {
 	return string(_value[id]), nil
 }
 
+func (s *ExtendString) IndexOfExError(id int) string {
+	if id > s.Len()-1 {
+		return ""
+	}
+
+	_value := []rune(s.Value)
+	return string(_value[id])
+}
+
 // number type in go is `int` or `float` + number or complex
 func (s *ExtendString) IsNumberType() bool {
 	return s.IsComplex() || s.IsFloat() || s.IsInt()
@@ -124,5 +133,19 @@ func (s *ExtendString) EndsWith(pattern string) bool {
 
 func (s *ExtendString) Replace(pattern, target string) string {
 	result := strings.Replace(s.Value, pattern, target, -1)
+	return result
+}
+
+// Get all substring of a ExtendString of length
+func (s *ExtendString) GetAllSubStrs(length int) []string {
+	var result []string
+	if s.Len() < length {
+		return make([]string, 0)
+	}
+
+	for i := 0; i+length <= s.Len(); i++ {
+		result = append(result, s.SubString(i, i+length))
+	}
+
 	return result
 }

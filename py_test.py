@@ -26,4 +26,4 @@ public class Test {
 """
 a = hash(5)
 
-"aaa".replace
+import difflib
